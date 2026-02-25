@@ -1,6 +1,5 @@
 """This script defines several special popups for specific operations like creating a circuit."""
-from PyQt6.QtWidgets import QDialog, QLineEdit, QLabel, QPushButton, QGridLayout, QDialogButtonBox
-
+from PyQt6.QtWidgets import QDialog, QLineEdit, QLabel, QPushButton, QGridLayout, QDialogButtonBox, QFileDialog
 
 class CreateCircuitPopup(QDialog):
     """A popup asking the user several informations about a circuit to be created (name, dimensions, assets folders, etc.)"""
@@ -14,11 +13,16 @@ class CreateCircuitPopup(QDialog):
         # Circuit name
         self.nameLabel = QLabel("Circuit name:")
         self.nameEdit = QLineEdit()
+        self.nameEdit.setPlaceholderText("Circuit name...")
 
         # Image assets folder
         self.imageLabel = QLabel("Image assets folder:")
         self.imageEdit = QLineEdit()
+        self.imageEdit.setPlaceholderText("Image assets folder...")
+
         self.imageAssetsButton = QPushButton("Browse...")
+
+        self.imageAssetsButton.clicked.connect(self.browseImages)
 
         # Standard buttons ("OK" and "Cancel")
         button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
@@ -38,5 +42,38 @@ class CreateCircuitPopup(QDialog):
 
 
         self.setLayout(parentLayout)
+
+
+    def browseFolder(self, dialogTitle:str="Browse folder") -> str:
+        """Allows the user to browse folders and returns the absolute path of the selected folder.
+        - dialogTitle: the title of the dialog window."""
+
+        dialog = QFileDialog() # Dialog to browse folders
+        dialog.setFileMode(QFileDialog.FileMode.Directory) # Configure the file dialog to accept only directories
+        dialog.setWindowTitle(dialogTitle)
+
+        opened_folder = dialog.exec()
+
+        if opened_folder:
+            print(dialog.selectedFiles()[0])
+            return dialog.selectedFiles()[0] # Return the absolute path to the directory
+        
+        else:
+            return ""
+        
+
+    def browseImages(self) -> str:
+        """Allows the user to browse folders containing images an returns the absolute file path of the selected folder."""
+
+        folder_path = self.browseFolder("Select a folder containing image assets")
+
+        # Change the text in the imageEdit widget only if the user selected a valid folder
+        if folder_path != "":
+            self.imageEdit.setText(folder_path)
+
+
+        return folder_path    
+
+
 
         
