@@ -1,2 +1,58 @@
 """This program defines the home window of the application and runs it."""
-from PyQt6.QtWidgets import QApplication, QMainWindow
+from PyQt6.QtWidgets import QApplication, QMainWindow,QLabel, QVBoxLayout
+from PyQt6.QtGui import QAction
+from PyQt6.QtCore import Qt
+
+class HomeWindow(QMainWindow):
+    """An instance of the application home window. It allows the user to create or open circuits."""
+    def __init__(self):
+        super().__init__() # Initialize the parent QMainWindow object
+
+        # Minimum dimensions : 600*400
+        self.setMinimumSize(600, 400)
+
+        parentLayout = QVBoxLayout() # Set a vertical layout for widgets
+
+        # Define the menu bar
+        menu_bar = self.menuBar()
+
+
+        # "File" menu
+        file_menu = menu_bar.addMenu("File")
+
+        # == "File" menu actions ==
+        
+        # Create a circuit
+        create_circuit_action = QAction("New circuit...", self)
+        create_circuit_action.setShortcut("Ctrl+N")
+        #create_circuit_action.triggered.connect(None) # Show a popup to create a new circuit when the "create circuit" action is triggered
+        file_menu.addAction(create_circuit_action) # Add the action to the "File" menu
+
+
+        # Open a circuit
+        open_circuit_action = QAction("Open circuit...", self)
+        open_circuit_action.setShortcut("Ctrl+O")
+        file_menu.addAction(open_circuit_action)
+
+        # Quit the application
+        quit_action = QAction("Quit...", self)
+        quit_action.setShortcut("Ctrl+Q")
+        quit_action.triggered.connect(self.close)
+        file_menu.addAction(quit_action)
+
+
+        # Widget displaying recent opened circuits
+        recentLabel = QLabel("No recent activity", alignment=Qt.AlignmentFlag.AlignCenter)
+        parentLayout.addWidget(recentLabel)
+
+        self.setLayout(parentLayout)
+        self.setCentralWidget(recentLabel)
+
+
+
+# Launch the app
+app = QApplication([])
+home_window = HomeWindow()
+
+home_window.show()
+app.exec()
