@@ -2,6 +2,7 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow,QLabel, QVBoxLayout
 from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt
+from special_popus import *
 
 class HomeWindow(QMainWindow):
     """An instance of the application home window. It allows the user to create or open circuits."""
@@ -25,7 +26,7 @@ class HomeWindow(QMainWindow):
         # Create a circuit
         create_circuit_action = QAction("New circuit...", self)
         create_circuit_action.setShortcut("Ctrl+N")
-        #create_circuit_action.triggered.connect(None) # Show a popup to create a new circuit when the "create circuit" action is triggered
+        create_circuit_action.triggered.connect(self.create_circuit) # Show a popup to create a new circuit when the "create circuit" action is triggered
         file_menu.addAction(create_circuit_action) # Add the action to the "File" menu
 
 
@@ -48,6 +49,13 @@ class HomeWindow(QMainWindow):
         self.setLayout(parentLayout)
         self.setCentralWidget(recentLabel)
 
+
+    def create_circuit(self):
+        """Displays a popup meant to set up a new circuit"""
+        
+        # Display a popup to set up the new circuit
+        create_popup = CreateCircuitPopup()
+        create_popup.exec()
 
 
 # Launch the app

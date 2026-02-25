@@ -4,3 +4,4 @@ It mainly uses PyQt6, which is a modern GUI API for applications written in Pyth
 The software is composed of several files with distinct roles:
 
     - main.py: defines the main window and runs the application.
+    - special_popus.py: defines several popus that are used by other scripts.
