@@ -1,5 +1,6 @@
 """This script defines several special popups for specific operations like creating a circuit."""
-from PyQt6.QtWidgets import QDialog, QLineEdit, QLabel, QPushButton, QGridLayout, QDialogButtonBox, QFileDialog
+from PyQt6.QtWidgets import QDialog, QLineEdit, QLabel, QPushButton, QGridLayout, QDialogButtonBox, QFileDialog, QMessageBox
+import os
 
 class CreateCircuitPopup(QDialog):
     """A popup asking the user several informations about a circuit to be created (name, dimensions, assets folders, etc.)"""
@@ -14,6 +15,7 @@ class CreateCircuitPopup(QDialog):
         self.nameLabel = QLabel("Circuit name:")
         self.nameEdit = QLineEdit()
         self.nameEdit.setPlaceholderText("Circuit name...")
+        self.nameEdit.setText("New circuit")
 
         # Image assets folder
         self.imageLabel = QLabel("Image assets folder:")
@@ -67,8 +69,17 @@ class CreateCircuitPopup(QDialog):
 
         folder_path = self.browseFolder("Select a folder containing image assets")
 
+
         # Change the text in the imageEdit widget only if the user selected a valid folder
         if folder_path != "":
+            
+            # Afficher une erreur si le dossier ne contient pas de fichiers image valides
+            while not any(file.endswith(".jpg") or file.endswith(".png") for file in os.listdir(folder_path)):
+                error_message = QMessageBox.critical(self, "Invalid images assets folder", "The selected folder does not contain valid PNG or JPEG files.", QMessageBox.StandardButton.Retry)
+                folder_path = self.browseFolder("Select a folder containing image assets")
+
+
+
             self.imageEdit.setText(folder_path)
 
 
