@@ -2,3 +2,4 @@
 Circuit files contains serialized JSON data reflecting the entire state of a circuit."""
 import json
 from user_data.sanitize_filenames import *
+
