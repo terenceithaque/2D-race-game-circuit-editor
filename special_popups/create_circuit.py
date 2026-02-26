@@ -49,8 +49,8 @@ class CreateCircuitPopup(QDialog):
         button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                       QDialogButtonBox.StandardButton.Cancel)
         
-        button_box.accepted.connect(self.getData)
-        button_box.rejected.connect(self.getData)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
 
         
         parentLayout.addWidget(self.nameLabel, 0, 0)
@@ -125,6 +125,19 @@ class CreateCircuitPopup(QDialog):
             self.saveLocationEdit.setText(save_location)
 
         return save_location
+    
+
+    def validInput(self) -> bool:
+        """Checks the validity of all inputs in the dialog box and return True if everything is valid, or False otherwise."""
+
+        inputData = self.getData()
+
+        for value in inputData.values():
+            if isinstance(value, str):
+                if value.strip() == "":
+                    return False
+
+        return True        
 
 
     def getData(self) -> dict:
@@ -138,7 +151,6 @@ class CreateCircuitPopup(QDialog):
             "dimensions_columns":self.circuitGridColumns.value()
         }
 
-        print(input_values)
 
         return input_values
 

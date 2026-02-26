@@ -1,5 +1,5 @@
 """This program defines the home window of the application and runs it."""
-from PyQt6.QtWidgets import QApplication, QMainWindow,QLabel, QVBoxLayout
+from PyQt6.QtWidgets import QApplication, QMainWindow,QLabel, QVBoxLayout, QMessageBox
 from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt
 from special_popups.create_circuit import *
@@ -11,6 +11,8 @@ class HomeWindow(QMainWindow):
 
         # Minimum dimensions : 600*400
         self.setMinimumSize(600, 400)
+
+        self.setWindowTitle("2D circuit editor - Home")
 
         parentLayout = QVBoxLayout() # Set a vertical layout for widgets
 
@@ -55,7 +57,21 @@ class HomeWindow(QMainWindow):
         
         # Display a popup to set up the new circuit
         create_popup = CreateCircuitPopup()
-        create_popup.exec()
+        result = create_popup.exec()
+
+        if result:
+
+            # Check input validity
+            valid_input = create_popup.validInput()
+
+            # If there are invalid inputs, show an error message
+            if not valid_input:
+                QMessageBox.critical(self, "Invalid inputs", "Invalid inputs were detected in the circuit creation popup.", QMessageBox.StandardButton.Ok)
+
+            else: 
+                # Create the circuit otherwise 
+                creation_data = create_popup.getData()
+                print(creation_data)
 
 
 # Launch the app
