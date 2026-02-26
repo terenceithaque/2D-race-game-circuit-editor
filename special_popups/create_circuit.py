@@ -48,6 +48,9 @@ class CreateCircuitPopup(QDialog):
         # Standard buttons ("OK" and "Cancel")
         button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                       QDialogButtonBox.StandardButton.Cancel)
+        
+        button_box.accepted.connect(self.getData)
+        button_box.rejected.connect(self.getData)
 
         
         parentLayout.addWidget(self.nameLabel, 0, 0)
@@ -121,7 +124,25 @@ class CreateCircuitPopup(QDialog):
         if save_location !="":
             self.saveLocationEdit.setText(save_location)
 
-        return save_location        
+        return save_location
+
+
+    def getData(self) -> dict:
+        """Returns a dictionnary containing the values of each input in the popup."""
+
+        input_values = {
+            "circuit_name":self.nameEdit.text(),
+            "image_assets_folder":self.imageEdit.text(),
+            "save_location":self.saveLocationEdit.text(),
+            "dimensions_lines":self.circuitGridLines.value(),
+            "dimensions_columns":self.circuitGridColumns.value()
+        }
+
+        print(input_values)
+
+        return input_values
+
+
 
 
 
