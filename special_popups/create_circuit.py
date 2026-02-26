@@ -1,4 +1,4 @@
-"""This script defines several special popups for specific operations like creating a circuit."""
+"""This script defines a popup allowing to crate a new circuit"""
 from PyQt6.QtWidgets import QDialog, QLineEdit, QLabel, QPushButton, QGridLayout, QDialogButtonBox, QFileDialog, QMessageBox
 import os
 
@@ -21,6 +21,7 @@ class CreateCircuitPopup(QDialog):
         self.imageLabel = QLabel("Image assets folder:")
         self.imageEdit = QLineEdit()
         self.imageEdit.setPlaceholderText("Image assets folder...")
+        self.imageEdit.setReadOnly(True)
 
         self.imageAssetsButton = QPushButton("Browse...")
 
@@ -38,7 +39,7 @@ class CreateCircuitPopup(QDialog):
         parentLayout.addWidget(self.imageEdit, 1,1)
         parentLayout.addWidget(self.imageAssetsButton, 1,2)
 
-        parentLayout.addWidget(button_box)
+        parentLayout.addWidget(button_box, 2, 0, 1, 3)
 
         
 
