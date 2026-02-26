@@ -27,6 +27,17 @@ class CreateCircuitPopup(QDialog):
 
         self.imageAssetsButton.clicked.connect(self.browseImages)
 
+
+        # Save location
+        self.saveLocationLabel = QLabel("Save location:")
+        self.saveLocationEdit = QLineEdit()
+        self.saveLocationEdit.setPlaceholderText("Save folder...")
+        self.saveLocationEdit.setReadOnly(True)
+
+        self.saveLocationButton = QPushButton("Select folder...")
+
+        self.saveLocationButton.clicked.connect(self.browseSaveFolder)
+
         # Standard buttons ("OK" and "Cancel")
         button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                       QDialogButtonBox.StandardButton.Cancel)
@@ -39,7 +50,11 @@ class CreateCircuitPopup(QDialog):
         parentLayout.addWidget(self.imageEdit, 1,1)
         parentLayout.addWidget(self.imageAssetsButton, 1,2)
 
-        parentLayout.addWidget(button_box, 2, 0, 1, 3)
+        parentLayout.addWidget(self.saveLocationLabel, 2, 0)
+        parentLayout.addWidget(self.saveLocationEdit, 2, 1)
+        parentLayout.addWidget(self.saveLocationButton)
+
+        parentLayout.addWidget(button_box, 3, 0, 1, 3)
 
         
 
@@ -84,7 +99,18 @@ class CreateCircuitPopup(QDialog):
             self.imageEdit.setText(folder_path)
 
 
-        return folder_path    
+        return folder_path
+
+
+    def browseSaveFolder(self) -> str:
+        """Allows the user to browse the folder inside of which the circuit will be saved."""
+
+        save_location = self.browseFolder("Select save location folder:")
+
+        if save_location !="":
+            self.saveLocationEdit.setText(save_location)
+
+        return save_location        
 
 
 
