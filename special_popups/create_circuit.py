@@ -1,5 +1,5 @@
 """This script defines a popup allowing to crate a new circuit"""
-from PyQt6.QtWidgets import QDialog, QLineEdit, QLabel, QPushButton, QGridLayout, QDialogButtonBox, QFileDialog, QMessageBox
+from PyQt6.QtWidgets import QDialog, QLineEdit, QLabel, QPushButton, QGridLayout, QDialogButtonBox, QFileDialog, QMessageBox, QSpinBox
 import os
 
 class CreateCircuitPopup(QDialog):
@@ -38,6 +38,13 @@ class CreateCircuitPopup(QDialog):
 
         self.saveLocationButton.clicked.connect(self.browseSaveFolder)
 
+        # Circuit dimensions
+        self.dimensionsLabel = QLabel("Circuit dimensions:")
+        self.circuitGridLines = QSpinBox()
+        self.circuitGridLines.setRange(48, 512)
+        self.circuitGridColumns = QSpinBox()
+        self.circuitGridColumns.setRange(48, 512)
+
         # Standard buttons ("OK" and "Cancel")
         button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                       QDialogButtonBox.StandardButton.Cancel)
@@ -54,7 +61,11 @@ class CreateCircuitPopup(QDialog):
         parentLayout.addWidget(self.saveLocationEdit, 2, 1)
         parentLayout.addWidget(self.saveLocationButton)
 
-        parentLayout.addWidget(button_box, 3, 0, 1, 3)
+        parentLayout.addWidget(self.dimensionsLabel, 3,0)
+        parentLayout.addWidget(self.circuitGridLines, 3,1)
+        parentLayout.addWidget(self.circuitGridColumns, 3,2)
+
+        parentLayout.addWidget(button_box, 4, 0, 1, 3)
 
         
 
