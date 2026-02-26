@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QApplication, QMainWindow,QLabel, QVBoxLayout, QMess
 from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt
 from special_popups.create_circuit import *
+from user_data.circuit_files import *
 
 class HomeWindow(QMainWindow):
     """An instance of the application home window. It allows the user to create or open circuits."""
