@@ -3,7 +3,8 @@ from PyQt6.QtWidgets import QApplication, QMainWindow,QLabel, QVBoxLayout, QMess
 from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt
 from special_popups.create_circuit import *
-from user_data.circuit_files import *
+import user_data.circuit_files
+import user_data.circuit
 
 class HomeWindow(QMainWindow):
     """An instance of the application home window. It allows the user to create or open circuits."""
@@ -47,9 +48,8 @@ class HomeWindow(QMainWindow):
 
         # Widget displaying recent opened circuits
         recentLabel = QLabel("No recent activity", alignment=Qt.AlignmentFlag.AlignCenter)
-        parentLayout.addWidget(recentLabel)
+        recentLabel.setLayout(parentLayout)
 
-        self.setLayout(parentLayout)
         self.setCentralWidget(recentLabel)
 
 
@@ -73,6 +73,11 @@ class HomeWindow(QMainWindow):
                 # Create the circuit otherwise 
                 creation_data = create_popup.getData()
                 print(creation_data)
+                new_circuit = user_data.circuit.Circuit(creation_data["circuit_name"], 
+                                                        creation_data["save_location"],
+                                                        creation_data["image_assets_folder"],
+                                                        creation_data["dimensions_lines"],
+                                                        creation_data["dimensions_columns"])
 
 
 # Launch the app
