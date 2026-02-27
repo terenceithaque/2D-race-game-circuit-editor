@@ -78,6 +78,9 @@ class HomeWindow(QMainWindow):
                                                         creation_data["image_assets_folder"],
                                                         creation_data["dimensions_lines"],
                                                         creation_data["dimensions_columns"])
+                
+                # Save the circuit to a file
+                user_data.circuit_files.save_circuit(new_circuit)
 
 
 # Launch the app
