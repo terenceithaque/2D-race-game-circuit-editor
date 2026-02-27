@@ -1,6 +1,7 @@
 """This script defines a popup allowing to crate a new circuit"""
 from PyQt6.QtWidgets import QDialog, QLineEdit, QLabel, QPushButton, QGridLayout, QDialogButtonBox, QFileDialog, QMessageBox, QSpinBox
 import os
+import user_data.sanitize_filenames
 
 class CreateCircuitPopup(QDialog):
     """A popup asking the user several informations about a circuit to be created (name, dimensions, assets folders, etc.)"""
@@ -45,6 +46,12 @@ class CreateCircuitPopup(QDialog):
         self.circuitGridColumns = QSpinBox()
         self.circuitGridColumns.setRange(48, 512)
 
+
+        # Final file path label
+        self.finalPathLabel = QLabel("")
+        self.saveLocationEdit.textChanged.connect(self.updateFinalPathLabelText)
+        self.nameEdit.textChanged.connect(self.updateFinalPathLabelText)
+
         # Standard buttons ("OK" and "Cancel")
         button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                       QDialogButtonBox.StandardButton.Cancel)
@@ -67,8 +74,11 @@ class CreateCircuitPopup(QDialog):
         parentLayout.addWidget(self.dimensionsLabel, 3,0)
         parentLayout.addWidget(self.circuitGridLines, 3,1)
         parentLayout.addWidget(self.circuitGridColumns, 3,2)
+    
+        parentLayout.addWidget(self.finalPathLabel, 4, 0)
 
-        parentLayout.addWidget(button_box, 4, 0, 1, 3)
+        parentLayout.addWidget(button_box, 5, 0, 1, 3)
+
 
         
 
@@ -153,6 +163,13 @@ class CreateCircuitPopup(QDialog):
 
 
         return input_values
+    
+
+    def updateFinalPathLabelText(self) -> None:
+        """Updates the text inside of the final path label text."""
+
+        final_file_path = os.path.join(self.saveLocationEdit.text(), user_data.sanitize_filenames.sanitize_filename(self.nameEdit.text() + ".json"))
+        self.finalPathLabel.setText(f"Will be saved as <b>{final_file_path}</b>.")
 
 
 
