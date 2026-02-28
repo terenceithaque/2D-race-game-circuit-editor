@@ -21,8 +21,8 @@ def save_circuit(circuit:user_data.circuit.Circuit) -> None:
 
     print(file_path)
     
-    with open(file_path, "w") as f:
-        json.dump(circuit.jsonRep, f)
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(circuit.jsonRep, f, indent=4, ensure_ascii=False)
         f.close()
 
 
