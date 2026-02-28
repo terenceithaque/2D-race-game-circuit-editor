@@ -17,7 +17,10 @@ class HomeWindow(QMainWindow):
 
         self.setWindowTitle("2D circuit editor - Home")
 
+
         parentLayout = QVBoxLayout() # Set a vertical layout for widgets
+
+        self.editor = None # Current editor window
 
         # Define the menu bar
         menu_bar = self.menuBar()
@@ -25,6 +28,7 @@ class HomeWindow(QMainWindow):
 
         # "File" menu
         file_menu = menu_bar.addMenu("File")
+
 
         # == "File" menu actions ==
         
@@ -59,10 +63,10 @@ class HomeWindow(QMainWindow):
 
         self.hide() # Hide the home window
 
-        editor = circuit_editor.CircuitEditorWindow()
-        editor.show()
+        self.editor = circuit_editor.CircuitEditorWindow()
+        self.editor.show()
 
-        editor.destroyed.connect(self.show) # Show the home window once the editor is closed
+        self.editor.destroyed.connect(self.show) # Show the home window once the editor is closed
 
 
 
@@ -101,6 +105,7 @@ class HomeWindow(QMainWindow):
 
 # Launch the app
 app = QApplication([])
+#app.setQuitOnLastWindowClosed(False)
 home_window = HomeWindow()
 
 home_window.show()
