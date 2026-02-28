@@ -5,6 +5,7 @@ from PyQt6.QtCore import Qt
 from special_popups.create_circuit import *
 import user_data.circuit_files
 import user_data.circuit
+import circuit_editor
 
 class HomeWindow(QMainWindow):
     """An instance of the application home window. It allows the user to create or open circuits."""
@@ -53,6 +54,18 @@ class HomeWindow(QMainWindow):
         self.setCentralWidget(recentLabel)
 
 
+    def open_circuit_editor(self) -> None:
+        """Open a circuit editor window and hides the home window."""
+
+        self.hide() # Hide the home window
+
+        editor = circuit_editor.CircuitEditorWindow()
+        editor.show()
+
+        editor.destroyed.connect(self.show) # Show the home window once the editor is closed
+
+
+
     def create_circuit(self):
         """Displays a popup meant to set up a new circuit"""
         
@@ -81,6 +94,9 @@ class HomeWindow(QMainWindow):
                 
                 # Save the circuit to a file
                 user_data.circuit_files.save_circuit(new_circuit)
+
+                # Create a new editor window
+                self.open_circuit_editor()
 
 
 # Launch the app
