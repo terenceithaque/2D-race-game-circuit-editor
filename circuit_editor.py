@@ -33,6 +33,7 @@ class CircuitEditorWindow(QMainWindow):
         # Open a circuit
         open_circuit_action = QAction("Open circuit...", self)
         open_circuit_action.setShortcut("Ctrl+O")
+        open_circuit_action.triggered.connect(self.ask_open_circuit)
         file_menu.addAction(open_circuit_action)
 
         # Save circuit
@@ -45,5 +46,19 @@ class CircuitEditorWindow(QMainWindow):
         save_as_action.setShortcut("Ctrl+Shift+S")
         file_menu.addAction(save_as_action)
 
+
+    def ask_open_circuit(self) -> None:
+        """Displays a dialog allowing the user to open a circuit file and opens that file."""
+
+        dialog = QFileDialog(self, "Open a circuit", "", "JSON circuit files (*json)") # File dialog
+        dialog.setFileMode(QFileDialog.FileMode.ExistingFile) # The user can open only existing files
+        
+        file_selected = dialog.exec()
+
+        if file_selected:
+            file_path = dialog.selectedFiles()[0]
+
+            return user_data.circuit_files.open_circuit(file_path)
+        
         
 
