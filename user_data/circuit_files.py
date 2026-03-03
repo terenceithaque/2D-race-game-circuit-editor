@@ -5,6 +5,25 @@ import json
 import user_data.sanitize_filenames
 import user_data.circuit
 
+
+def open_circuit(file_path:str) -> dict:
+    """Opens the given JSON circuit file and returns the dictionnary describing that circuit."""
+
+    abs_file_path = os.path.abspath(file_path) # Absolute file path
+
+    try:
+        with open(file_path, "r") as f:
+            circuit_data = json.load(f)
+
+        return circuit_data
+    
+    except:
+        circuit_data = {}  
+        return circuit_data      
+
+
+
+
 def save_circuit(circuit:user_data.circuit.Circuit) -> None:
     """Saves the given Circuit object to a JSON file.
     The save location and the file name are determined using the metada inside the JSON representation of that Circuit object."""

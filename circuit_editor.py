@@ -1,12 +1,13 @@
 """This script handles the circuit editor window of the app"""
-from PyQt6.QtWidgets import QApplication, QMainWindow,QLabel, QVBoxLayout, QMessageBox
+from PyQt6.QtWidgets import QApplication, QMainWindow,QLabel, QVBoxLayout, QMessageBox, QFileDialog
 from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt
+import user_data.circuit_files
 
 
 class CircuitEditorWindow(QMainWindow):
     """An instance of a circuit editor window."""
-    def __init__(self):
+    def __init__(self, file:str=""):
         """Initializes the circuit editor window."""
         
         super().__init__()
