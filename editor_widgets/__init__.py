@@ -1,0 +1,1 @@
+"""The editor_widgets folder contains scripts handling widgets tied to the circuit editor."""

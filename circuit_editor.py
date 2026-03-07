@@ -8,7 +8,6 @@ import user_data.circuit
 import user_data.circuit_files
 import special_popups.create_circuit
 
-
 class CircuitEditorWindow(QMainWindow):
     """An instance of a circuit editor window."""
     def __init__(self, file:str=""):
