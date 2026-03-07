@@ -6,6 +6,7 @@ from special_popups.create_circuit import *
 import user_data.circuit_files
 import user_data.circuit
 import circuit_editor
+import recent_activity
 
 class HomeWindow(QMainWindow):
     """An instance of the application home window. It allows the user to create or open circuits."""
@@ -53,10 +54,14 @@ class HomeWindow(QMainWindow):
 
 
         # Widget displaying recent opened circuits
-        recentLabel = QLabel("No recent activity", alignment=Qt.AlignmentFlag.AlignCenter)
-        recentLabel.setLayout(parentLayout)
+        self.recentLabel = QLabel("No recent activity", alignment=Qt.AlignmentFlag.AlignCenter)
+        self.recentLabel.setLayout(parentLayout)
 
-        self.setCentralWidget(recentLabel)
+        self.recentActivity = recent_activity.open_recent_activity() # Get the recent activity saved in the 'recent_activity.json' file
+
+        print(f"Recent activity: {self.recentActivity}")
+
+        self.setCentralWidget(self.recentLabel)
 
 
     def open_circuit_editor(self, file:str="") -> None:
@@ -119,6 +124,12 @@ class HomeWindow(QMainWindow):
                 # Create a new editor window
                 file_name = user_data.sanitize_filenames.sanitize_filename(creation_data["circuit_name"] + ".json") # Sanitize the file name based on the circuit name
                 save_location = creation_data["save_location"] # Save directory
+
+                self.recentActivity[creation_data["circuit_name"]] = f"{Path(save_location) / file_name}"
+                print(f"Recent activity: {self.recentActivity}")
+
+                recent_activity.save_recent_activity(self.recentActivity)
+
                 self.open_circuit_editor(f"{Path(save_location) / file_name}")
 
 

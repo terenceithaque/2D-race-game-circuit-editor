@@ -7,6 +7,7 @@ from PyQt6.QtCore import Qt
 import user_data.circuit
 import user_data.circuit_files
 import special_popups.create_circuit
+import editor_widgets
 
 class CircuitEditorWindow(QMainWindow):
     """An instance of a circuit editor window."""
