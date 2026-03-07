@@ -12,7 +12,7 @@ def open_circuit(file_path:str) -> dict:
     abs_file_path = os.path.abspath(file_path) # Absolute file path
 
     try:
-        with open(file_path, "r") as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             circuit_data = json.load(f)
 
         return circuit_data

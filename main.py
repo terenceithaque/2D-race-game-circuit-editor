@@ -58,12 +58,12 @@ class HomeWindow(QMainWindow):
         self.setCentralWidget(recentLabel)
 
 
-    def open_circuit_editor(self) -> None:
+    def open_circuit_editor(self, file:str="") -> None:
         """Open a circuit editor window and hides the home window."""
 
         self.hide() # Hide the home window
 
-        self.editor = circuit_editor.CircuitEditorWindow()
+        self.editor = circuit_editor.CircuitEditorWindow(file)
         self.editor.show()
 
         self.editor.destroyed.connect(self.show) # Show the home window once the editor is closed
@@ -100,7 +100,9 @@ class HomeWindow(QMainWindow):
                 user_data.circuit_files.save_circuit(new_circuit)
 
                 # Create a new editor window
-                self.open_circuit_editor()
+                file_name = user_data.sanitize_filenames.sanitize_filename(creation_data["circuit_name"] + ".json") # Sanitize the file name based on the circuit name
+                save_location = creation_data["save_location"] # Save directory
+                self.open_circuit_editor(f"{Path(save_location) / file_name}")
 
 
 # Launch the app
