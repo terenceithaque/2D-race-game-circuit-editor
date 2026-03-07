@@ -1,6 +1,6 @@
 """This program defines the home window of the application and runs it."""
-from PyQt6.QtWidgets import QApplication, QMainWindow,QLabel, QVBoxLayout, QMessageBox
-from PyQt6.QtGui import QAction
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QMessageBox, QListWidget, QListWidgetItem
+from PyQt6.QtGui import QAction, QFont
 from PyQt6.QtCore import Qt
 from special_popups.create_circuit import *
 import user_data.circuit_files
@@ -53,15 +53,32 @@ class HomeWindow(QMainWindow):
         file_menu.addAction(quit_action)
 
 
-        # Widget displaying recent opened circuits
-        self.recentLabel = QLabel("No recent activity", alignment=Qt.AlignmentFlag.AlignCenter)
-        self.recentLabel.setLayout(parentLayout)
 
         self.recentActivity = recent_activity.open_recent_activity() # Get the recent activity saved in the 'recent_activity.json' file
-
         print(f"Recent activity: {self.recentActivity}")
+    
+        # If there is no recent activity
+        if self.recentActivity == {}:
+            # Widget displaying recently opened circuits
+            self.recentLabel = QLabel("No recent activity", alignment=Qt.AlignmentFlag.AlignCenter)
+            self.recentLabel.setLayout(parentLayout)
+            self.setCentralWidget(self.recentLabel)
 
-        self.setCentralWidget(self.recentLabel)
+        else:
+            # Display a list of recent circuits
+            self.recentList = QListWidget(self)
+            for circuit_name, file_path in self.recentActivity.items():
+                print(circuit_name, file_path)
+                circuit_item = QListWidgetItem(f"{circuit_name + "|" + file_path}")
+                # Display the recent circuits in bold
+                circuit_item_font = QFont()
+                circuit_item_font.setBold(True)
+                circuit_item.setFont(circuit_item_font)
+
+                self.recentList.addItem(circuit_item)
+
+            self.recentList.setLayout(parentLayout)
+            self.setCentralWidget(self.recentList)    
 
 
     def open_circuit_editor(self, file:str="") -> None:

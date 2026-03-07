@@ -17,7 +17,7 @@ def save_recent_activity(activity:dict) -> None:
 
 
     with open(file_path, "w", encoding="utf-8") as f:
-        json.dump(activity, f) # Save the activity
+        json.dump(activity, f, indent=4) # Save the activity
 
 
 def open_recent_activity() -> dict:
