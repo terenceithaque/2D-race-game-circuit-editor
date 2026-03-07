@@ -82,6 +82,7 @@ class HomeWindow(QMainWindow):
         # If the user selected a JSON file, open it in the circuit editor
         if result: 
             selected_file = dialog.selectedFiles()[0]
+            print(selected_file)
             self.open_circuit_editor(selected_file)
 
 

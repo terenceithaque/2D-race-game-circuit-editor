@@ -18,9 +18,10 @@ class CircuitEditorWindow(QMainWindow):
         
         self.setMinimumSize(600, 400)
 
-        self.setWindowTitle("Main Editor | 2D-race-game-circuit-editor")
+        
 
         self.file = file # Current circuit file path
+        self.setWindowTitle(f"{self.file} | 2D-race-game-circuit-editor")
 
         # Menu bar of the editor window
         menu_bar = self.menuBar()
@@ -81,7 +82,7 @@ class CircuitEditorWindow(QMainWindow):
                                                             creation_data["dimensions_columns"])
                     
                     # Save the circuit to a file
-                    self.setWindowTitle(f"{self.circuit.name} | 2D-race-game-circuit-editor") # Change the editor window title
+                    self.setWindowTitle(f"{self.circuit.name} - {str(Path(self.file))} | 2D-race-game-circuit-editor") # Change the editor window title
 
 
         # Otherwise, create the Circuit object based on the file's internal data
@@ -100,7 +101,10 @@ class CircuitEditorWindow(QMainWindow):
         if file_selected:
             file_path = dialog.selectedFiles()[0]
 
-            return user_data.circuit_files.open_circuit(file_path)
+            circuit_data = user_data.circuit_files.open_circuit(file_path)
+            self.file = file_path # Change the current opened circuit file
+            circuit_name = circuit_data["data"]["metadata"]["name"]
+            self.setWindowTitle(f"{circuit_name} - {str(Path(self.file))} | 2D-race-game-circuit-editor")
         
 
     def create_circuit_from_file(self) -> None:
@@ -113,7 +117,7 @@ class CircuitEditorWindow(QMainWindow):
                                                     nbLines=circuit_data["data"]["metadata"]["nb_lines"],
                                                     nbColumns=circuit_data["data"]["metadata"]["nb_columns"])
 
-        self.setWindowTitle(f"{self.circuit.name} | 2D-race-game-circuit-editor")   
+        self.setWindowTitle(f"{self.circuit.name} - {str(Path(self.file))} | 2D-race-game-circuit-editor")   
         
         
 
