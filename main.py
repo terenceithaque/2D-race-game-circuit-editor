@@ -42,6 +42,7 @@ class HomeWindow(QMainWindow):
         # Open a circuit
         open_circuit_action = QAction("Open circuit...", self)
         open_circuit_action.setShortcut("Ctrl+O")
+        open_circuit_action.triggered.connect(self.ask_open_circuit)
         file_menu.addAction(open_circuit_action)
 
         # Quit the application
@@ -67,6 +68,21 @@ class HomeWindow(QMainWindow):
         self.editor.show()
 
         self.editor.destroyed.connect(self.show) # Show the home window once the editor is closed
+
+
+    def ask_open_circuit(self) -> None:
+        """Display a user dialog to select a JSON circuit file and open it in a circuit editor window."""
+
+        # File dialog to pick a JSON circuit file
+        dialog = QFileDialog(self, "Open a circuit", "", "JSON circuit files (*.json)")
+        dialog.setFileMode(QFileDialog.FileMode.ExistingFile) # Ensure the user cannot open inexistant files
+
+        result = dialog.exec()
+
+        # If the user selected a JSON file, open it in the circuit editor
+        if result: 
+            selected_file = dialog.selectedFiles()[0]
+            self.open_circuit_editor(selected_file)
 
 
 
