@@ -1,5 +1,5 @@
 """This program defines the home window of the application and runs it."""
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QMessageBox, QListWidget, QListWidgetItem
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QMessageBox, QListWidget, QListWidgetItem, QWidget
 from PyQt6.QtGui import QAction, QFont
 from PyQt6.QtCore import Qt
 from special_popups.create_circuit import *
@@ -53,20 +53,37 @@ class HomeWindow(QMainWindow):
         file_menu.addAction(quit_action)
 
 
+        central_widget = QWidget()
+        self.setCentralWidget(central_widget)
+
+        parentLayout = QVBoxLayout()
+        central_widget.setLayout(parentLayout)
+
 
         self.recentActivity = recent_activity.open_recent_activity() # Get the recent activity saved in the 'recent_activity.json' file
         print(f"Recent activity: {self.recentActivity}")
+
+        self.recentLabel = QLabel("No recent activity", alignment=Qt.AlignmentFlag.AlignCenter)
+        self.recentList = QListWidget()
+        self.openRecentButton = QPushButton("Open recent")
+        self.openRecentButton.clicked.connect(self.open_recent)
     
         # If there is no recent activity
         if self.recentActivity == {}:
             # Widget displaying recently opened circuits
-            self.recentLabel = QLabel("No recent activity", alignment=Qt.AlignmentFlag.AlignCenter)
-            self.recentLabel.setLayout(parentLayout)
-            self.setCentralWidget(self.recentLabel)
+
+            self.recentList.hide()
+            self.openRecentButton.hide()
+
+            parentLayout.addWidget(self.recentLabel)
 
         else:
+            self.recentLabel.hide()
+
+            
+            
+
             # Display a list of recent circuits
-            self.recentList = QListWidget(self)
             for circuit_name, file_path in self.recentActivity.items():
                 print(circuit_name, file_path)
                 circuit_item = QListWidgetItem(f"{circuit_name + "|" + file_path}")
@@ -77,8 +94,30 @@ class HomeWindow(QMainWindow):
 
                 self.recentList.addItem(circuit_item)
 
-            self.recentList.setLayout(parentLayout)
-            self.setCentralWidget(self.recentList)    
+            parentLayout.addWidget(self.openRecentButton)
+            parentLayout.addWidget(self.recentList)
+            
+                
+
+
+
+    def open_recent(self) -> None:
+        """Open a recent selected circuit into the editor."""
+
+
+        # Get the item selected in the list
+        selected_items = self.recentList.selectedItems()
+
+        if selected_items == []:
+            # Do nothing if no item is selected
+            pass
+        
+        else:
+            # Open the selected circuit in the editor otherwise
+            selected_circuit_item = selected_items[0]
+            circuit_name, file_path = selected_circuit_item.text().split("|")[0], selected_circuit_item.text().split("|")[1]
+
+            self.open_circuit_editor(file_path)
 
 
     def open_circuit_editor(self, file:str="") -> None:
