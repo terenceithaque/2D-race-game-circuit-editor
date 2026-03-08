@@ -62,6 +62,7 @@ class CircuitEditorWindow(QMainWindow):
         if not self.file.strip() or not Path(self.file).exists():
             creation_popup = special_popups.create_circuit.CreateCircuitPopup()
             result = creation_popup.exec()
+            print(result)
             if result:
 
                 # Check input validity
@@ -81,6 +82,7 @@ class CircuitEditorWindow(QMainWindow):
                                                             creation_data["dimensions_lines"],
                                                             creation_data["dimensions_columns"])
                     
+                    user_data.circuit_files.save_circuit(self.circuit) # Save the created circuit
                     # Save the circuit to a file
                     self.setWindowTitle(f"{self.circuit.name} - {str(Path(self.file))} | 2D-race-game-circuit-editor") # Change the editor window title
 
