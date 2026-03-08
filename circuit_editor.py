@@ -8,10 +8,11 @@ import user_data.circuit
 import user_data.circuit_files
 import special_popups.create_circuit
 import editor_widgets
+import recent_activity
 
 class CircuitEditorWindow(QMainWindow):
     """An instance of a circuit editor window."""
-    def __init__(self, file:str=""):
+    def __init__(self, file:str="", activity:dict={}):
         """Initializes the circuit editor window."""
         
         super().__init__()
@@ -53,6 +54,8 @@ class CircuitEditorWindow(QMainWindow):
         save_as_action.setShortcut("Ctrl+Shift+S")
         file_menu.addAction(save_as_action)
 
+
+        self.recent_activity = activity # Recent user activity
         
 
         print(f"Opened file: {self.file}")
@@ -85,7 +88,8 @@ class CircuitEditorWindow(QMainWindow):
                     user_data.circuit_files.save_circuit(self.circuit) # Save the created circuit
                     # Save the circuit to a file
                     self.setWindowTitle(f"{self.circuit.name} - {str(Path(self.file))} | 2D-race-game-circuit-editor") # Change the editor window title
-
+                    self.recent_activity[creation_data["circuit_name"]] = str(Path(self.file))
+                    recent_activity.save_recent_activity(self.recent_activity)
 
         # Otherwise, create the Circuit object based on the file's internal data
         else:
@@ -119,7 +123,11 @@ class CircuitEditorWindow(QMainWindow):
                                                     nbLines=circuit_data["data"]["metadata"]["nb_lines"],
                                                     nbColumns=circuit_data["data"]["metadata"]["nb_columns"])
 
-        self.setWindowTitle(f"{self.circuit.name} - {str(Path(self.file))} | 2D-race-game-circuit-editor")   
+        self.setWindowTitle(f"{self.circuit.name} - {str(Path(self.file))} | 2D-race-game-circuit-editor")
+
+        # Update the recent activity
+        self.recent_activity[circuit_data["data"]["metadata"]["name"]] = self.file
+        recent_activity.save_recent_activity(self.recent_activity)  
         
         
 
