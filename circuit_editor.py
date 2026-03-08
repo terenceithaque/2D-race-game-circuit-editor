@@ -10,6 +10,7 @@ import special_popups.create_circuit
 import editor_widgets
 import recent_activity
 
+
 class CircuitEditorWindow(QMainWindow):
     """An instance of a circuit editor window."""
     def __init__(self, file:str="", activity:dict={}):
